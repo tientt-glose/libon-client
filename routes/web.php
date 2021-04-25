@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'HomeController@index')->name('home.index');
+
+Route::get('product', function () {
+    return view('product.product-details-affiliate');
 });
+
+Route::get('book/{id}', 'BookController@detail')->name('book.detail');
+
+Route::post('/borrow_book', 'CartController@borrowBook')->name('cart.borrow_book');
