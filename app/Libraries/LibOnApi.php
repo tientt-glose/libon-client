@@ -79,15 +79,34 @@ class LibOnApi
         return $result;
     }
 
+    public function getOrganAll($params = array())
+    {
+        $result = $this->getApiData('/organization', $params);
+        return $result;
+    }
+
     public function getBookDetail($params = array())
     {
         $result = $this->getApiData('/book/detail', $params);
         return $result;
     }
 
-    public function createBorrowOrder($params = [])
+    public function createBorrowOrder($params = array())
     {
         $result = $this->getApiData('/order/createBorrowOrder', $params);
+        return $result;
+    }
+
+    public function login($params = array())
+    {
+        $result = $this->getApiData('/login', $params);
+        // dd($result);
+        return $result;
+    }
+
+    public function signup($params = array())
+    {
+        $result = $this->getApiData('/signup', $params);
         return $result;
     }
 }

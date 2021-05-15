@@ -8,9 +8,11 @@ use App\Libraries\LibOnApi;
 
 class BookController extends Controller
 {
-    public function __construct()
+    protected $libOnApi;
+
+    public function __construct(LibOnApi $libOnApi)
     {
-        $this->libonApi = new LibOnApi();
+        $this->libOnApi = $libOnApi;
     }
 
     public function detail(Request $request)
@@ -18,8 +20,8 @@ class BookController extends Controller
         $params = [
             'id' =>  $request->id
         ];
-        $data = $this->libonApi->getBookDetail($params);
+        $data = $this->libOnApi->getBookDetail($params);
         $book = $data->result;
-        return view('product.detail', compact('book'));
+        return view('books.detail', compact('book'));
     }
 }

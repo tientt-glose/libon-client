@@ -1,5 +1,11 @@
 @extends('index')
 @section('title', "Chi tiết sách")
+
+@section ('before-styles-end')
+<!-- custom -->
+<link rel="stylesheet" href="{{ asset('css/detail.css') }}">
+@endsection
+
 @section('content')
 <section class="breadcrumb-section">
     <h2 class="sr-only">Site Breadcrumb</h2>
@@ -24,9 +30,47 @@
         @endforeach
         @endif
         <div class="row mb--60">
-            <div class="col-lg-5 mb--30">
+            <div class="col-lg-3">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        @foreach ($book->pic_link as $key => $pic)
+                        @if ($pic != null)
+                        @if ($key == 0)
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}" class="active"></li>
+                        @else
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"></li>
+                        @endif
+                        @endif
+                        @endforeach
+                    </ol>
+                    <div class="carousel-inner">
+                        @foreach ($book->pic_link as $key => $pic)
+                        @if ($pic != null)
+                        @if ($key == 0)
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="{{ $pic }}">
+                        </div>
+                        @else
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{{ $pic }}">
+                        </div>
+                        @endif
+                        @endif
+                        @endforeach
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            {{-- <div class="col-lg-4 mb--30">
                 <!-- Product Details Slider Big Image-->
-                <div class="product-details-slider sb-slick-slider arrow-type-two" data-slick-setting='{
+                <div class="product-details-slider sb-slick-slider arrow-type-two" id="book-slider" data-slick-setting='{
               "slidesToShow": 1,
               "arrows": false,
               "fade": true,
@@ -34,13 +78,17 @@
               "swipe": false,
               "asNavFor": ".product-slider-nav"
               }'>
+                    @foreach ($book->pic_link as $pic)
+                    @if ($pic != null)
                     <div class="single-slide">
-                        <img src="{{ $book->pic_link }}" alt="">
-                    </div>
-                </div>
-                <!-- Product Details Slider Nav -->
-                <div class="mt--30 product-slider-nav sb-slick-slider arrow-type-two" data-slick-setting='{
-            "infinite":true,
+                        <img src="{{ $pic }}" alt="">
+        </div>
+        @endif
+        @endforeach
+    </div>
+    <!-- Product Details Slider Nav -->
+    <div class="mt--30 product-slider-nav sb-slick-slider arrow-type-two" data-slick-setting='{
+            "infinite":false,
               "autoplay": true,
               "autoplaySpeed": 8000,
               "slidesToShow": 4,
@@ -50,24 +98,28 @@
               "asNavFor": ".product-details-slider",
               "focusOnSelect": true
               }'>
-                    <div class="single-slide">
-                        <img src="{{ $book->pic_link }}" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-7">
-                <div class="product-details-info pl-lg--30 ">
-                    <p class="tag-block">Thể loại:
-                        {{-- <a href="#">Movado</a>, <a href="#">Omega</a> --}}
-                    </p>
-                    <h3 class="product-title">{{ $book->name }}</h3>
-                    <ul class="list-unstyled">
-                        <li>Nhà xuất bản: <a href="#" class="list-value font-weight-bold">{{ $book->publisher_id }}</a>
-                        </li>
-                        <li>Tác giả: <span class="list-value">{{ $book->author }}</span></li>
-                        <li>Số trang: <span class="list-value">{{ $book->page_number }}</span> tr</li>
-                    </ul>
-                    {{-- <div class="rating-widget">
+        @foreach ($book->pic_link as $pic)
+        @if ($pic != null)
+        <div class="single-slide">
+            <img src="{{ $pic }}" alt="">
+        </div>
+        @endif
+        @endforeach
+    </div>
+    </div> --}}
+    <div class="col-lg-9">
+        <div class="product-details-info pl-lg--30 ">
+            <p class="tag-block">Thể loại:
+                {{-- <a href="#">Movado</a>, <a href="#">Omega</a> --}}
+            </p>
+            <h3 class="product-title">{{ $book->name }}</h3>
+            <ul class="list-unstyled">
+                <li>Nhà xuất bản: <a href="#" class="list-value font-weight-bold">{{ $book->publisher_id }}</a>
+                </li>
+                <li>Tác giả: <span class="list-value">{{ $book->author }}</span></li>
+                <li>Số trang: <span class="list-value">{{ $book->page_number }}</span> tr</li>
+            </ul>
+            {{-- <div class="rating-widget">
 								<div class="rating-block">
 									<span class="fas fa-star star_on"></span>
 									<span class="fas fa-star star_on"></span>
@@ -80,24 +132,24 @@
 									<a href="#">Write a review</a>
 								</div>
 							</div> --}}
-                    <article class="product-details-article">
-                        <h4 class="sr-only">Book Summary</h4>
-                        <p>{{ $book->content_summary }}</p>
-                    </article>
-                    <div class="add-to-cart-row">
-                        <!-- <div class="count-input-block">
+            <article class="product-details-article">
+                <h4 class="sr-only">Book Summary</h4>
+                <p>{{ $book->content_summary }}</p>
+            </article>
+            <div class="add-to-cart-row">
+                <!-- <div class="count-input-block">
                 <span class="widget-label">Qty</span>
                 <input type="number" class="form-control text-center" value="1">
             </div> -->
-                        <div class="add-cart-btn">
-                            <a href="#" class="btn btn-outlined--primary" data-toggle="modal"
-                                data-target="#quickModal">Mượn sách</a>
-                        </div>
-                    </div>
+                <div class="add-cart-btn">
+                    <a href="#" class="btn btn-outlined--primary" data-toggle="modal" data-target="#quickModal">Mượn
+                        sách</a>
                 </div>
             </div>
         </div>
-        {{-- <div class="sb-custom-tab review-tab section-padding">
+    </div>
+    </div>
+    {{-- <div class="sb-custom-tab review-tab section-padding">
             <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab"
@@ -117,7 +169,7 @@
                     <article class="review-article">
                         <h1 class="sr-only">Tab Description</h1>
                         <p>{{ $book->content_summary }}</p>
-        </article>
+    </article>
     </div>
     <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="tab2">
         <div class="review-wrapper">

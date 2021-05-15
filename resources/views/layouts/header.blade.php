@@ -16,10 +16,24 @@
                 <div class="col-lg-4">
                     <div class="main-navigation flex-lg-right">
                         <div class="cart-widget">
-                            {{-- <div class="login-block">
-                                <a href="#" class="font-weight-bold">Đăng nhập</a> <br>
-                                <span>hoặc</span><a href="#">Đăng ký</a>
-                            </div> --}}
+                            <div class="login-block">
+                                @if(!Session::has('authenticated'))
+                                <a href="{{ route('user.login.show') }}" class="font-weight-bold">Đăng nhập</a> <br>
+                                <span>hoặc</span><a href="{{ route('user.signup.show') }}">Đăng ký</a>
+                                @else
+                                <div class="dropdown">
+                                    <div class="dropdown-toggle" id="dropdownMenu" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        <span>Xin chào,</a> <br>
+                                            <span class="font-weight-bold">{{ Session::get('fullname') }}</span>
+                                    </div>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                        <a class="dropdown-item" href="#">Thông tin cá nhân</a>
+                                        <a class="dropdown-item" href="{{ route('user.logout') }}">Đăng xuất</a>
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
                             {{-- <div class="cart-block">
                                 <div class="cart-total">
                                     <span class="text-number">

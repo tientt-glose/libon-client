@@ -15,10 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('home.index');
 
-Route::get('product', function () {
-    return view('product.product-details-affiliate');
-});
-
 Route::get('book/{id}', 'BookController@detail')->name('book.detail');
 
 Route::post('/borrow_book', 'CartController@borrowBook')->name('cart.borrow_book');
+
+Route::prefix('user')->group(function () {
+    Route::get('login', 'UserController@loginView')->name('user.login.show');
+    Route::get('signup', 'UserController@signupView')->name('user.signup.show');
+    Route::post('login', 'UserController@login')->name('user.login');
+    Route::post('signup', 'UserController@signup')->name('user.signup');
+    Route::middleware(['custom_auth'])->group(function () {
+        Route::get('/logout', 'UserController@logout')->name('user.logout');
+    });
+});

@@ -17,6 +17,7 @@ class HomeController extends Controller
     {
         $data = $this->libonApi->getProductAll();
         $books = $data->result->book;
+        // dd($data);
         return view('home.index', compact('books'));
     }
 }

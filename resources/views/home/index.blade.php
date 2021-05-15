@@ -1,5 +1,34 @@
 @extends('index')
 @section('title', "Trang chủ")
+@section('before-theme-styles-end')
+<!-- toastr -->
+<link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+@endsection
+
+@section ('before-styles-end')
+<!-- custom -->
+<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+@endsection
+
+@section('script')
+<!-- toastr -->
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+
+@if($errors->any())
+@foreach ($errors->all() as $error)
+<script>
+    toastr.error('{{ $error }}')
+</script>
+@endforeach
+@endif
+
+@if (session()->has('success'))
+<script>
+    toastr.success('{{ session()->get('success') }}')
+</script>
+@endif
+@endsection
+
 @section('content')
 <!--=================================
         Hero Area
@@ -150,34 +179,39 @@
                             {"breakpoint":320, "settings": {"slidesToShow": 1} }
                         ]'>
                         @foreach ($books as $book )
-                            <div class="single-slide">
-                                <div class="product-card">
-                                    <div class="product-card--body">
-                                        <div class="card-image">
-                                            <img src="{{ $book->pic_link }}" alt="">
-                                            <div class="hover-contents">
-                                                <a href="{{ route('book.detail', ['id' => $book->id]) }}" class="hover-image">
-                                                    <img src="{{ $book->pic_link }}" alt="">
-                                                </a>
-                                                <div class="hover-btns">
-                                                    {{-- <a href="#" class="single-btn">
+                        <div class="single-slide">
+                            <div class="product-card" id="book_home">
+                                <div class="product-card--body">
+                                    <div class="card-image">
+                                        <img src="{{ $book->pic1 != null ? $book->pic1 : url('img/default--book--2.png') }}"
+                                            alt="">
+                                        <div class="hover-contents">
+                                            <a href="{{ route('book.detail', ['id' => $book->id]) }}"
+                                                class="hover-image">
+                                                <img src="{{ $book->pic1 != null ? $book->pic1 : url('img/default--book--2.png') }}"
+                                                    alt="">
+                                            </a>
+                                            <div class="hover-btns">
+                                                {{-- <a href="#" class="single-btn">
                                                         <i class="fas fa-shopping-basket"></i>
                                                     </a> --}}
-                                                    <a href="{{ route('book.detail', ['id' => $book->id]) }}" class="single-btn">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                </div>
+                                                <a href="{{ route('book.detail', ['id' => $book->id]) }}"
+                                                    class="single-btn">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="product-header">
-                                        <h3><a href="{{ route('book.detail', ['id' => $book->id]) }}">{{ $book->name }}</a></h3>
-                                        <a href="{{ route('book.detail', ['id' => $book->id]) }}" class="author">
-                                            {{ $book->author }}
-                                        </a>
-                                    </div>
+                                </div>
+                                <div class="product-header mt--5">
+                                    <h3><a href="{{ route('book.detail', ['id' => $book->id]) }}">{{ $book->name }}</a>
+                                    </h3>
+                                    <a href="{{ route('book.detail', ['id' => $book->id]) }}" class="author">
+                                        {{ $book->author }}
+                                    </a>
                                 </div>
                             </div>
+                        </div>
                         @endforeach
                     </div>
                 </div>

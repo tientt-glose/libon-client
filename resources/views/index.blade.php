@@ -10,10 +10,17 @@
 
     <!-- bootstrap v4.3.1 -->
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/plugins.css') }}" />
+
+    @yield('before-theme-styles-end')
+
     <!-- css -->
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/main.css') }}" />
+
+    <!-- Custom css -->
+    @yield('before-styles-end')
+
     <!-- favicons -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 </head>
 
 <body>
@@ -40,10 +47,14 @@
         </div>
     </main>
 
+    <!-- popper -->
+    <script src="{{ asset('plugins/popper/popper.min.js') }}"></script>
     <!-- jQuery Scripts -->
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/ajax-mail.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+
+    @yield('script')
 </body>
 
 </html>
