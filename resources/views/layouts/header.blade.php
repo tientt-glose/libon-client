@@ -29,6 +29,8 @@
                                     </div>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu">
                                         <a class="dropdown-item" href="#">Thông tin cá nhân</a>
+                                        <a class="dropdown-item" href="{{ route('orders.index') }}">Danh sách đơn
+                                            mượn</a>
                                         <a class="dropdown-item" href="{{ route('user.logout') }}">Đăng xuất</a>
                                     </div>
                                 </div>
