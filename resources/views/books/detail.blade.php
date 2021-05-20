@@ -1,9 +1,75 @@
 @extends('index')
 @section('title', "Chi tiết sách")
+@section('before-theme-styles-end')
+<!-- toastr -->
+<link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+@endsection
 
-@section ('before-styles-end')
+{{-- @section ('before-styles-end')
 <!-- custom -->
 <link rel="stylesheet" href="{{ asset('css/detail.css') }}">
+@endsection --}}
+
+@section('script')
+<!-- toastr -->
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+
+@if($errors->any())
+@foreach ($errors->all() as $error)
+<script>
+    toastr.error('{{ $error }}')
+</script>
+@endforeach
+@endif
+
+@if (session()->has('success'))
+<script>
+    toastr.success('{{ session()->get('success') }}')
+</script>
+@endif
+
+<script>
+    $('#add-cart-button').click(function () {
+            var result = true
+            $('#change-item-cart .cross-btn').each(function () {
+                if ($(this).data('id') == {{ $book->id }}) {
+                    result = false
+                    toastr.error('Sách đã được thêm vào giỏ, mỗi sách chỉ được mượn 1 quyển')
+                    return result
+                }
+            })
+
+            if (result == false) {
+                return result
+            }
+
+            $.ajax({
+                data: {
+                    book_name: '{{ $book->name }}',
+                    book_id: '{{ $book->id }}',
+                    pic: '{{ $book->pic_link[0] }}',
+                    csrf: '{{ csrf_token() }}'
+                },
+                url: '{{ route('cart.add_to_cart') }}',
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                success: function (data) {
+                    // console.log(data);
+                    if(data.result == 0){
+                        toastr.error(data.message)
+                    }else{
+                        $('#change-item-cart').empty();
+                        $('#change-item-cart').html(data.html)
+                        $('#change-item-cart-2').empty();
+                        $('#change-item-cart-2').html(data.html)
+                        $('#outer-count-2').text(data.quantity)
+                        $('#outer-count').text(data.quantity)
+                        toastr.success(data.message)
+                    }
+                }
+            })
+        })
+</script>
 @endsection
 
 @section('content')
@@ -22,53 +88,53 @@
 </section>
 <main class="inner-page-sec-padding-bottom">
     <div class="container">
-        @if($errors->any())
+        {{-- @if($errors->any())
         @foreach ($errors->getMessageBag()->toArray() as $error)
         <div class="alert alert-danger" role="alert">
             {{ $error[0] }}
-        </div>
-        @endforeach
-        @endif
-        <div class="row mb--60">
-            <div class="col-lg-3">
-                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        @foreach ($book->pic_link as $key => $pic)
-                        @if ($pic != null)
-                        @if ($key == 0)
-                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}" class="active"></li>
-                        @else
-                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"></li>
-                        @endif
-                        @endif
-                        @endforeach
-                    </ol>
-                    <div class="carousel-inner">
-                        @foreach ($book->pic_link as $key => $pic)
-                        @if ($pic != null)
-                        @if ($key == 0)
-                        <div class="carousel-item active">
-                            <img class="d-block w-100" src="{{ $pic }}">
-                        </div>
-                        @else
-                        <div class="carousel-item">
-                            <img class="d-block w-100" src="{{ $pic }}">
-                        </div>
-                        @endif
-                        @endif
-                        @endforeach
+    </div>
+    @endforeach
+    @endif --}}
+    <div class="row mb--60">
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @foreach ($book->pic_link as $key => $pic)
+                    @if ($pic != null)
+                    @if ($key == 0)
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}" class="active"></li>
+                    @else
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ $key }}"></li>
+                    @endif
+                    @endif
+                    @endforeach
+                </ol>
+                <div class="carousel-inner">
+                    @foreach ($book->pic_link as $key => $pic)
+                    @if ($pic != null)
+                    @if ($key == 0)
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="{{ $pic }}">
                     </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
+                    @else
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="{{ $pic }}">
+                    </div>
+                    @endif
+                    @endif
+                    @endforeach
                 </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-            {{-- <div class="col-lg-4 mb--30">
+        </div>
+        {{-- <div class="col-lg-4 mb--30">
                 <!-- Product Details Slider Big Image-->
                 <div class="product-details-slider sb-slick-slider arrow-type-two" id="book-slider" data-slick-setting='{
               "slidesToShow": 1,
@@ -82,9 +148,9 @@
                     @if ($pic != null)
                     <div class="single-slide">
                         <img src="{{ $pic }}" alt="">
-        </div>
-        @endif
-        @endforeach
+    </div>
+    @endif
+    @endforeach
     </div>
     <!-- Product Details Slider Nav -->
     <div class="mt--30 product-slider-nav sb-slick-slider arrow-type-two" data-slick-setting='{
@@ -107,7 +173,7 @@
         @endforeach
     </div>
     </div> --}}
-    <div class="col-lg-9">
+    <div class="col-sm-9 col-md-9 col-lg-9 col-xs-9">
         <div class="product-details-info pl-lg--30 ">
             <p class="tag-block">Thể loại:
                 {{-- <a href="#">Movado</a>, <a href="#">Omega</a> --}}
@@ -142,10 +208,17 @@
                 <input type="number" class="form-control text-center" value="1">
             </div> -->
                 <div class="add-cart-btn">
-                    <a href="#" class="btn btn-outlined--primary" data-toggle="modal" data-target="#quickModal">Mượn
-                        sách</a>
+                    <button type="button" class="btn btn-outlined--primary btn-dis" id="add-cart-button"
+                        aria-disabled="true" {{$book->can_borrow == 0 ? 'disabled' : '' }}>Thêm sách vào giỏ</button>
+                    {{-- <a href="#" class="btn btn-outlined--primary btn-dis" id="add-cart-button" aria-disabled="true">Thêm sách vào giỏ</a> --}}
                 </div>
             </div>
+            @if ($book->can_borrow == 0)
+            <div class="compare-wishlist-row">
+                <span class="add-link" style="color: red"><i class="fas fa-info-circle"></i>Sách đang hết, không thể
+                    mượn</span>
+            </div>
+            @endif
         </div>
     </div>
     </div>

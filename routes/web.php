@@ -17,7 +17,18 @@ Route::get('/', 'HomeController@index')->name('home.index');
 
 Route::get('book/{id}', 'BookController@detail')->name('book.detail');
 
-Route::post('/borrow_book', 'CartController@borrowBook')->name('cart.borrow_book');
+Route::middleware(['custom_auth'])->prefix('cart')->group(function () {
+    Route::post('/add-cart', 'CartController@addBookToCart')->name('cart.add_to_cart');
+    Route::post('/delete-cart', 'CartController@deleteBookInCart')->name('cart.delete_to_cart');
+    Route::middleware(['custom_auth'])->group(function () {
+        Route::get('/', 'CartController@show')->name('cart.show');
+        Route::post('/borrow_book', 'CartController@borrowBook')->name('cart.borrow_book');
+    });
+});
+
+Route::middleware(['custom_auth'])->prefix('orders')->group(function () {
+    Route::get('/', 'OrderController@index')->name('orders.index');
+});
 
 Route::prefix('user')->group(function () {
     Route::get('login', 'UserController@loginView')->name('user.login.show');
