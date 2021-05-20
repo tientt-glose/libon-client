@@ -52,6 +52,7 @@ class UserController extends Controller
             $request->session()->put('authenticated', $data->result->access_token);
             $request->session()->put('email', $data->result->email);
             $request->session()->put('fullname', $data->result->fullname);
+            $request->session()->put('userId', $data->result->id);
 
             return redirect()->route('home.index')->with(['success' => 'Đăng nhập thành công']);
         } catch (\Throwable $th) {

@@ -109,4 +109,10 @@ class LibOnApi
         $result = $this->getApiData('/signup', $params);
         return $result;
     }
+
+    public function getOrderList($params = array())
+    {
+        $result = $this->getApiData('/order', $params);
+        return $result;
+    }
 }

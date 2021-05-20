@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Cart;
+use stdClass;
 use App\Libraries\LibOnApi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
@@ -15,36 +18,143 @@ class CartController extends Controller
 
     public function borrowBook(Request $request)
     {
-        $params = $request->only('name', 'card_id', 'phone_number', 'book_id');
-        $validatorArray = [
-            'name' => 'required',
-            'card_id'  => 'required',
-            'phone_number' => 'required'
-        ];
-        $messages = [
-            'name.required' => 'Bạn chưa nhập tên',
-            'card_id.required'  => 'Bạn chưa nhập mã số định danh',
-            'phone_number.required' => 'Bạn chưa nhập số điện thoại'
-        ];
-        $validator = Validator::make($params, $validatorArray, $messages);
-        if ($validator->fails()) {
-            //todo: hien message loi kieu gi
-            return redirect()->back()->withInput()->withErrors($validator->errors()->all());
+        try {
+            $params = $request->all();
+
+            $validatorArray = [
+                'books' => 'required',
+                'user_id'  => 'required',
+            ];
+            $messages = [
+                'books.required' => 'Thiếu thông tin sách',
+                'user_id.required'  => 'Thiếu thông tin người mượn',
+            ];
+            $validator = Validator::make($params, $validatorArray, $messages);
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator->errors());
+            }
+
+            $sendData = [
+                'user_id' => $params['user_id'],
+                'books' => $params['books']
+            ];
+
+            $result = $this->libonApi->createBorrowOrder($sendData);
+
+            if (!empty($result->success)) {
+                $request->session()->forget('cart');
+                return view('cart.done', compact('result'));
+                // return redirect()->route('cart.borrow_book_done', $result->orderId)->with(['success' => 'Mượn sách thành công']);
+            } else {
+                return redirect()->route('cart.show')->withErrors('Mượn sách không thành công');
+            }
+        } catch (\Throwable $th) {
+            Log::error('[Order Add Client]' . $th->getMessage());
+            return redirect()->back()->withInput()->withErrors($th->getMessage());
         }
+    }
 
-        $userInfo = trim($params['name']) . '_' . trim($params['card_id']) . '_' . trim($params['phone_number']);
+    public function addBookToCart(Request $request)
+    {
+        try {
+            $result = new stdClass();
+            $params = $request->all();
 
-        $sendData = [
-            'user_info' => $userInfo,
-            'book_id' => $params['book_id']
-        ];
+            $validatorArray = [
+                'book_name' => 'required',
+                'book_id' => 'required',
+                'pic' => 'required',
+            ];
+            $messages = [
+                'book_name.required' => 'Thiếu tên sách',
+                'book_id.required' => 'Thiếu mã sách',
+                'pic.required' => 'Thiếu link ảnh của sách',
+            ];
+            $validator = Validator::make($params, $validatorArray, $messages);
+            if ($validator->fails()) {
+                $result->result = 0;
+                $result->detail = $validator->errors();
+                $result->message = 'Thêm lỗi, thiếu thông tin. Vui lòng thử lại';
+                return \response()->json($result);
+            }
 
-        $result = $this->libonApi->createBorrowOrder($sendData);
+            $book = [
+                'book_name' => $params['book_name'],
+                'pic' => $params['pic']
+            ];
 
-        if (!empty($result->success)) {
-            return redirect(route('book.detail', ['id' => $params['book_id']]));
-        } else {
-            return redirect('/');
+            $oldCart = $request->session()->has('cart') ? $request->session()->get('cart') : null;
+            $newCart = new Cart($oldCart);
+
+            $newCart->addCart($book, $params['book_id']);
+
+            $request->session()->put('cart', $newCart);
+
+            $result->result = 1;
+            $result->html = view('layouts.cart', compact('newCart'))->render();
+            // dd($result->html);
+            $result->message = 'Thêm vào giỏ sách thành công';
+            $result->quantity = $newCart->totalQuantity;
+            return \response()->json($result);
+        } catch (\Throwable $th) {
+            $result->detail = $th->getMessage();
+            $result->message = 'Lỗi thêm giỏ. Vui lòng thử lại';
+            $result->result = 0;
+            return \response()->json($result);
         }
+    }
+
+    public function deleteBookInCart(Request $request)
+    {
+        try {
+            $result = new stdClass();
+            $params = $request->all();
+
+            $validatorArray = [
+                'book_id' => 'required',
+            ];
+            $messages = [
+                'book_id.required' => 'Thiếu mã sách',
+            ];
+            $validator = Validator::make($params, $validatorArray, $messages);
+            if ($validator->fails()) {
+                $result->result = 0;
+                $result->detail = $validator->errors();
+                $result->message = 'Xóa lỗi, thiếu thông tin. Vui lòng thử lại';
+                return \response()->json($result);
+            }
+
+            $oldCart = $request->session()->has('cart') ? $request->session()->get('cart') : null;
+            $newCart = new Cart($oldCart);
+
+            $newCart->deleteCart($params['book_id']);
+
+            if ($newCart->totalQuantity > 0) {
+                $request->session()->put('cart', $newCart);
+                $result->html = view('layouts.cart', compact('newCart'))->render();
+                $result->table = view('layouts.cart-table', compact('newCart'))->render();
+                $result->quantity = $newCart->totalQuantity;
+            } else {
+                $request->session()->forget('cart', $newCart);
+                $result->html = view('layouts.cart-empty')->render();
+                $result->table = view('layouts.cart-table-empty')->render();
+                $result->quantity = $newCart->totalQuantity;
+            }
+
+            $result->result = 1;
+            // dd($result->html);
+            $result->message = 'Xóa sách khỏi giỏ sách thành công';
+            return \response()->json($result);
+        } catch (\Throwable $th) {
+            $result->detail = $th->getMessage();
+            $result->message = 'Lỗi xóa giỏ. Vui lòng thử lại';
+            $result->result = 0;
+            return \response()->json($result);
+        }
+    }
+
+    public function show()
+    {
+        return view('cart.show');
     }
 }

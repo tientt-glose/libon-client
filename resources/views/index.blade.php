@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/main.css') }}" />
 
     <!-- Custom css -->
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     @yield('before-styles-end')
 
     <!-- favicons -->
@@ -54,6 +55,36 @@
     <script src="{{ asset('js/ajax-mail.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
 
+    <script>
+        $('#change-item-cart, #change-item-cart-2').on('click', '.cross-btn', function () {
+            // console.log($(this).data('id'))
+            $.ajax({
+                data: {
+                    book_id: $(this).data('id'),
+                    csrf: '{{ csrf_token() }}'
+                },
+                url: '{{ route('cart.delete_to_cart') }}',
+                type: 'POST',
+                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                success: function (data) {
+                    // console.log(data);
+                    if(data.result == 0){
+                        toastr.error(data.message)
+                    }else{
+                        $('#change-item-cart').empty();
+                        $('#change-item-cart').html(data.html)
+                        $('#change-item-cart-2').empty();
+                        $('#change-item-cart-2').html(data.html)
+                        $('#outer-count').text(data.quantity)
+                        $('#outer-count-2').text(data.quantity)
+                        $('#cart-table').empty();
+                        $('#cart-table').html(data.table)
+                        toastr.success(data.message)
+                    }
+                }
+            })
+        })
+    </script>
     @yield('script')
 </body>
 

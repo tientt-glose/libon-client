@@ -24022,7 +24022,7 @@ input[type="number"] {
     position: relative;
 }
 .cart-product .image {
-    width: 120px;
+    /* width: 120px; */
     padding: 0 10px;
 }
 .cart-product .content {
@@ -24031,7 +24031,7 @@ input[type="number"] {
 }
 .cart-product .content .title {
     line-height: 20px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     display: block;
     margin-bottom: 11px;
     font-size: 14px;
@@ -28396,8 +28396,8 @@ input[type="number"] {
 .cart-table .table thead tr th {
     text-align: center;
     border: none;
-    text-transform: uppercase;
-    font-weight: 500;
+    /* text-transform: uppercase; */
+    font-weight: 700;
     color: #333;
     border-right: 1px solid #e5e5e5;
     padding: 20px 10px;
@@ -28437,9 +28437,9 @@ input[type="number"] {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    border: 1px solid #e5e5e5;
-    margin: 0 0 20px;
-    padding: 25px !important;
+    /* border: 1px solid #e5e5e5; */
+    /* margin: 0 0 20px; */
+    /* padding: 25px !important; */
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
@@ -28497,7 +28497,7 @@ input[type="number"] {
     color: #fff;
 }
 .cart-table .table tbody tr td .coupon-block label {
-    display: none;
+    /* display: none; */
 }
 
 .update-block .btn {
