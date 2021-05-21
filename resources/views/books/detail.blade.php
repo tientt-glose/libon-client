@@ -42,6 +42,7 @@
             if (result == false) {
                 return result
             }
+            // console.log(1);
 
             $.ajax({
                 data: {

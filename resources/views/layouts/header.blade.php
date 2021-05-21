@@ -7,13 +7,13 @@
                         <img src="{{ asset('img/logo.png') }}" alt="">
                     </a>
                 </div>
-                <div class="col-lg-5">
+                {{-- <div class="col-lg-5">
                     <div class="header-search-block">
                         <input type="text" placeholder="Tìm sách Pickup Book ngay!">
                         <button>Tìm kiếm</button>
                     </div>
-                </div>
-                <div class="col-lg-4">
+                </div> --}}
+                <div class="col-lg-9">
                     <div class="main-navigation flex-lg-right">
                         <div class="cart-widget">
                             <div class="login-block">

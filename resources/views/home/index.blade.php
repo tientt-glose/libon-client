@@ -52,7 +52,7 @@
                                         <br>khổng lồ</h2>
                                     <p>"Mỗi cuốn sách là một bức tranh kì diệu
                                         <br>về cuộc sống"</p>
-                                    <a href="shop-grid.html" class="btn btn-outlined--primary">
+                                    <a href="#" class="btn btn-outlined--primary">
                                         Pickup Book Now
                                     </a>
                                 </div>
@@ -68,7 +68,7 @@
                                         <br>đại cương</h2>
                                     <p>Giới thiệu kiến thức nền tảng
                                         <br>về tin học và công nghệ thông tin</p>
-                                    <a href="shop-grid.html" class="btn btn-outlined--primary">
+                                    <a href="{{ route('book.detail', 5) }}" class="btn btn-outlined--primary">
                                         Mượn ngay
                                     </a>
                                 </div>
