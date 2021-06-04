@@ -34,6 +34,8 @@
         $.ajax({
             data: {
                 book_id: $(_this).data('id'),
+                // delivery: $('#delivery option:selected').val(),
+                // address: $('#address').val(),
                 csrf: '{{ csrf_token() }}'
             },
             url: '{{ route('cart.delete_to_cart') }}',
@@ -52,11 +54,37 @@
                     $('#outer-count-2').text(data.quantity)
                     $('#cart-table').empty();
                     $('#cart-table').html(data.table)
+
+                    if(data.quantity == 0 && !document.getElementById('borrow-button').hasAttribute('disabled')){
+                        $('#borrow-button').attr('disabled', true);
+                    }
+
                     toastr.success(data.message)
                 }
             }
         })
     }
+</script>
+
+<script>
+    var $backupAddress = $('#address').val()
+    $('#delivery').change(function() {
+        if ($('#delivery option:selected').val() == 2 && document.getElementById('address').hasAttribute('disabled')) {
+            $('#address').removeAttr('disabled');
+            $('#address').attr('placeholder', 'Nhập địa chỉ nhận sách');
+            $('#address').val($backupAddress);
+        }
+
+        if ($('#delivery option:selected').val() == 1 && !document.getElementById('address').hasAttribute('disabled')) {
+            // $('#address').attr('disabled', true);
+            $backupAddress = $('#address').val();
+            $('#address').val('');
+            $('#address').attr({
+                'placeholder': 'Không khả dụng',
+                'disabled' : true,
+            });
+        }
+    });
 </script>
 @endsection
 
@@ -80,10 +108,10 @@
             <div class="page-section-title">
                 <h1>Chi tiết giỏ sách</h1>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <form action="{{ route('cart.borrow_book') }}" method="POST">
-                        @csrf
+            <form action="{{ route('cart.borrow_book') }}" method="POST">
+                @csrf
+                <div class="row">
+                    <div class="col-12">
                         <div class="cart-table table-responsive mb--40">
                             <table class="table">
                                 <!-- Head Row -->
@@ -112,18 +140,17 @@
                                         </td>
                                     </tr>
                                     @endforeach
-                                    <!-- Discount Row  -->
                                     <tr>
-                                        <td colspan="6" class="actions">
+                                        <td colspan="3" class="actions">
                                             <div class="coupon-block">
                                                 <div class="coupon-text">
                                                     <label for="coupon_code">Tổng số lượng:</label>
                                                     <span
                                                         class="quantity">{{ Session::has('cart') ? Session::get('cart')->totalQuantity : 0 }}</span>
                                                 </div>
-                                                <div class="coupon-btn">
+                                                {{-- <div class="coupon-btn">
                                                     <button type="submit" class="btn btn-outlined">Mượn sách</button>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </td>
                                     </tr>
@@ -140,9 +167,26 @@
                             </table>
                         </div>
                         <!-- Cart Table -->
-                    </form>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="font-weight-bold">Hình thức lấy sách</label>
+                        <select class="form-control" aria-placeholder="Lựa chọn hình thức lấy sách" id="delivery"
+                            name="delivery">
+                            <option value="1">Tự đến lấy</option>
+                            <option value="2">Sử dụng đơn vị vận chuyển</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="font-weight-bold">Địa chỉ nhận sách</label>
+                        <input class="form-control" type="text" id="address" name="address" placeholder="Không khả dụng"
+                            disabled required>
+                        <div class="mt--20" style="text-align: right">
+                            <button type="submit" class="btn btn-outlined" id="borrow-button"
+                                {{ Session::has('cart') ? '' : 'disabled' }}>Mượn sách</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </main>

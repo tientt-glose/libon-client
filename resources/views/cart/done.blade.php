@@ -49,9 +49,10 @@
             <div class="col-12">
                 <div class="order-complete-message text-center">
                     <h1>Thank you !</h1>
-                    <p>Đơn mượn đã tạo thành công. Hãy đến thư viện để Pickup book ngay.</p>
+                    <p>Đơn mượn đã tạo thành công.</p>
                 </div>
-                <p>Vui lòng cho chúng tôi ý kiến đóng góp tại link sau:</p>
+                <p>Vui lòng cho chúng tôi ý kiến đóng góp tại <a href="https://sal.vn/libon_2nd" target="_blank"
+                        class="font-weight-bold">đây</a>.</p>
                 <ul class="order-details-list">
                     <li>Mã đơn mượn: <strong>{{ $result->orderId }}</strong></li>
                     <li>Ngày tạo: <strong>{{ date('d-m-Y H:i', strtotime($result->createdAt)) }}</strong></li>
@@ -67,6 +68,26 @@
                             <tr>
                                 <td>Tổng số sách:</td>
                                 <td>{{ $result->quantity }}</td>
+                            </tr>
+                            <tr>
+                                <td>Hình thức lấy sách:</td>
+                                <td>
+                                    @switch($result->delivery)
+                                    @case(1)
+                                    Tự đến lấy
+                                    @break
+                                    @case(2)
+                                    Vận chuyển
+                                    @break
+                                    @default
+                                    {{ $result->delivery }}
+                                    @break
+                                    @endswitch
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Địa chỉ nhận sách:</td>
+                                <td>{{ $result->address ? $result->address : 'Không khả dụng' }}</td>
                             </tr>
                         </tbody>
                     </table>
