@@ -58,10 +58,12 @@
                             <!-- Head Row -->
                             <thead>
                                 <tr>
-                                    <th class="pro-thumbnail">Mã đơn</th>
+                                    <th>Mã đơn</th>
                                     <th class="pro-title">Tên sách</th>
-                                    <th class="pro-remove">Tổng số sách</th>
+                                    <th>Tổng</th>
                                     <th>Trạng thái</th>
+                                    <th>Hình thức lấy sách</th>
+                                    <th>Địa chỉ nhận sách</th>
                                     <th>Hạn trả</th>
                                     <th>Ngày tạo</th>
                                     <th>Ngày đến lấy</th>
@@ -73,9 +75,9 @@
                                 <!-- Product Row -->
                                 @foreach ($data->orders as $id => $order)
                                 <tr>
-                                    <td class="pro-thumbnail">{{ $order->id }}</td>
+                                    <td>{{ $order->id }}</td>
                                     <td class="pro-title">{{ $order->book_name }}</td>
-                                    <td class="pro-remove">{{ $order->quantity }}</td>
+                                    <td>{{ $order->quantity }}</td>
                                     @switch($order->status)
                                     {{-- cancel --}}
                                     @case(0)
@@ -111,6 +113,20 @@
                                     <td>{{ $order->status }}</td>
                                     @break
                                     @endswitch
+                                    <td>
+                                        @switch($order->delivery)
+                                        @case(1)
+                                        Tự đến lấy
+                                        @break
+                                        @case(2)
+                                        Vận chuyển
+                                        @break
+                                        @default
+                                        {{ $order->delivery }}
+                                        @break
+                                        @endswitch
+                                    </td>
+                                    <td>{{ $order->address }}</td>
                                     <td style="color: red">{{ $order->restore_deadline }}</td>
                                     <td>{{ date('d-m-Y H:i', strtotime($order->created_at)) }}</td>
                                     <td>{{ $order->pick_time }}</td>

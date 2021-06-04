@@ -6,11 +6,15 @@ use App\Cart;
 use stdClass;
 use App\Libraries\LibOnApi;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
+    const PICKUP = 1; //tu den lay
+    const SHIPPING = 2; //ship
+
     public function __construct()
     {
         $this->libonApi = new LibOnApi();
@@ -24,10 +28,14 @@ class CartController extends Controller
             $validatorArray = [
                 'books' => 'required',
                 'user_id'  => 'required',
+                'delivery' => 'integer',
+                'address' => Rule::requiredIf($params['delivery'] == $this::SHIPPING)
             ];
             $messages = [
                 'books.required' => 'Thiếu thông tin sách',
                 'user_id.required'  => 'Thiếu thông tin người mượn',
+                'delivery.integer' => 'Thiếu dữ liệu hình thức lấy sách',
+                'address.required' => 'Thiếu địa chỉ nhận sách'
             ];
             $validator = Validator::make($params, $validatorArray, $messages);
             if ($validator->fails()) {
@@ -36,7 +44,9 @@ class CartController extends Controller
 
             $sendData = [
                 'user_id' => $params['user_id'],
-                'books' => $params['books']
+                'books' => $params['books'],
+                'delivery' => $params['delivery'],
+                'address' => array_key_exists('address', $params) ? $params['address'] : null
             ];
 
             $result = $this->libonApi->createBorrowOrder($sendData);
@@ -112,9 +122,13 @@ class CartController extends Controller
 
             $validatorArray = [
                 'book_id' => 'required',
+                // 'delivery' => 'integer',
+                // 'address' => Rule::requiredIf($params['delivery'] == $this::SHIPPING)
             ];
             $messages = [
                 'book_id.required' => 'Thiếu mã sách',
+                // 'delivery.integer' => 'Thiếu dữ liệu hình thức lấy sách',
+                // 'address.required' => 'Thiếu địa chỉ nhận sách'
             ];
             $validator = Validator::make($params, $validatorArray, $messages);
             if ($validator->fails()) {
@@ -128,6 +142,13 @@ class CartController extends Controller
             $newCart = new Cart($oldCart);
 
             $newCart->deleteCart($params['book_id']);
+
+            // $deliInfo = array(
+            //     'delivery' => $params['delivery'],
+            //     'address' => array_key_exists('address', $params) ? $params['address'] : null
+            // );
+
+            // dd($params, $deliInfo);
 
             if ($newCart->totalQuantity > 0) {
                 $request->session()->put('cart', $newCart);
