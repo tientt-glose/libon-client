@@ -103,6 +103,19 @@ class LibOnApi
         return $result;
     }
 
+    public function getBookComment($params = array())
+    {
+        $result = $this->getApiData('/book/comment', $params);
+        return $result;
+    }
+
+    public function createComment($params = array())
+    {
+        // dd($params);
+        $result = $this->getApiData('/book/createComment', $params);
+        return $result;
+    }
+
     public function createBorrowOrder($params = array())
     {
         $result = $this->getApiData('/order/createBorrowOrder', $params);

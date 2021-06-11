@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index')->name('home.index');
 
 Route::prefix('book')->group(function () {
-    Route::get('/{id}', 'BookController@detail')->name('book.detail');
+    Route::get('{id}', 'BookController@detail')->name('book.detail');
+    Route::middleware(['custom_auth'])->group(function () {
+        Route::post('comment/{id}', 'BookController@storeComment')->name('book.comment');
+    });
 });
 
 Route::prefix('cart')->group(function () {

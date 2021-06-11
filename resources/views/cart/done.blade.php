@@ -51,7 +51,7 @@
                     <h1>Thank you !</h1>
                     <p>Đơn mượn đã tạo thành công.</p>
                 </div>
-                <p>Vui lòng cho chúng tôi ý kiến đóng góp tại <a href="https://sal.vn/libon_2nd" target="_blank"
+                <p>Vui lòng cho chúng tôi ý kiến đóng góp tại <a href="https://sal.vn/libon_3rd" target="_blank"
                         class="font-weight-bold">đây</a>.</p>
                 <ul class="order-details-list">
                     <li>Mã đơn mượn: <strong>{{ $result->orderId }}</strong></li>
