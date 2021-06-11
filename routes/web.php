@@ -15,7 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('home.index');
 
-Route::get('book/{id}', 'BookController@detail')->name('book.detail');
+
+Route::prefix('book')->group(function () {
+    Route::get('{id}', 'BookController@detail')->name('book.detail');
+    Route::middleware(['custom_auth'])->group(function () {
+        Route::post('comment/{id}', 'BookController@storeComment')->name('book.comment');
+    });
+});
 
 Route::post('/add-cart', 'CartController@addBookToCart')->name('cart.add_to_cart');
 Route::post('/delete-cart', 'CartController@deleteBookInCart')->name('cart.delete_to_cart');
