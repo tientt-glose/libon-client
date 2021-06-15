@@ -91,6 +91,18 @@ class LibOnApi
         return $result;
     }
 
+    public function checkPending($params = array())
+    {
+        $result = $this->getApiData('/book/pending', $params);
+        return $result;
+    }
+
+    public function checkBorrowable($params = array())
+    {
+        $result = $this->getApiData('/book/borrowable', $params);
+        return $result;
+    }
+
     public function createBorrowOrder($params = array())
     {
         $result = $this->getApiData('/order/createBorrowOrder', $params);

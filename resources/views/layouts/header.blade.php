@@ -24,11 +24,11 @@
                                 <div class="dropdown">
                                     <div class="dropdown-toggle" id="dropdownMenu" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
-                                        <span>Xin chào,</a> <br>
+                                        <span>Xin chào,<br>
                                             <span class="font-weight-bold">{{ Session::get('fullname') }}</span>
                                     </div>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                                        <a class="dropdown-item" href="#">Thông tin cá nhân</a>
+                                        {{-- <a class="dropdown-item" href="#">Thông tin cá nhân</a> --}}
                                         <a class="dropdown-item" href="{{ route('orders.index') }}">Danh sách đơn
                                             mượn</a>
                                         <a class="dropdown-item" href="{{ route('user.logout') }}">Đăng xuất</a>
@@ -91,7 +91,7 @@
                                         <div class="btn-block">
                                             {{-- <a href="cart.html" class="btn">View Cart <i
                                                     class="fas fa-chevron-right"></i></a> --}}
-                                            <a href="{{ route('cart.show') }}" class="btn btn--primary">Mượn sách</a>
+                                            <a href="{{ route('cart.show') }}" class="btn btn--primary">Xem giỏ</a>
                                         </div>
                                     </div>
                                 </div>
@@ -234,7 +234,7 @@
                                 <a href="{{ route('home.index') }}">Trang chủ</a>
                             </li>
                             <li class="menu-item">
-                                <a href="#">Sách mượn</a>
+                                <a href="{{ route('home.index') }}">Sách mượn</a>
                             </li>
                             <li class="menu-item">
                                 <a href="#">Về chúng tôi</a>

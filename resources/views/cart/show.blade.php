@@ -182,7 +182,7 @@
                             disabled required>
                         <div class="mt--20" style="text-align: right">
                             <button type="submit" class="btn btn-outlined" id="borrow-button"
-                                {{ Session::has('cart') ? '' : 'disabled' }}>Mượn sách</button>
+                                {{ Session::has('authenticated') && Session::has('cart') ? '' : 'disabled' }}>Mượn sách</button>
                         </div>
                     </div>
                 </div>
