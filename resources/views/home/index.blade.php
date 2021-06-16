@@ -59,7 +59,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="single-slide bg-image" data-bg="{{ asset('img/bg-images/home-2-slider-1.jpg') }}">
+                    <div class="single-slide bg-image" data-bg="{{ asset('img/bg-images/home-2-slider-1-1.jpg') }}">
                         <div class="home-content pl--30">
                             <div class="row">
                                 <div class="col-lg-7">

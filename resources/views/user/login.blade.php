@@ -1,5 +1,5 @@
 @extends('index')
-@section('title', "Trang chủ")
+@section('title', "Đăng nhập")
 
 @section('before-theme-styles-end')
 <!-- toastr -->
