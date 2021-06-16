@@ -141,10 +141,13 @@
         <div class="off-canvas-inner">
             <!-- search box start -->
             <div class="search-box offcanvas">
-                <form>
+                <a href="index.html" class="site-brand">
+                    <img src="{{ asset('img/logo.png') }}" alt="">
+                </a>
+                {{-- <form>
                     <input type="text" placeholder="Search Here">
                     <button class="search-btn"><i class="ion-ios-search-strong"></i></button>
-                </form>
+                </form> --}}
             </div>
             <!-- search box end -->
             <!-- mobile menu start -->
@@ -152,8 +155,8 @@
                 <!-- mobile menu navigation start -->
                 <nav class="off-canvas-nav">
                     <ul class="mobile-menu main-mobile-menu">
-                        <li><a href="#">Trang chủ</a></li>
-                        <li><a href="#">Sách mượn</a></li>
+                        <li><a href="{{ route('home.index') }}">Trang chủ</a></li>
+                        <li><a href="{{ route('home.index') }}">Sách mượn</a></li>
                         <li><a href="#">Về chúng tôi</a></li>
                     </ul>
                 </nav>
@@ -162,15 +165,19 @@
             <!-- mobile menu end -->
             <nav class="off-canvas-nav">
                 <ul class="mobile-menu menu-block-2">
+                    @if(!Session::has('authenticated'))
+                    <a href="{{ route('user.login.show') }}" class="font-weight-bold">Đăng nhập</a> <br>
+                    <span>hoặc&nbsp;</span><a href="{{ route('user.signup.show') }}">Đăng ký</a>
+                    @else
                     <li class="menu-item-has-children">
-                        <a href="#">My Account <i class="fas fa-angle-down"></i></a>
+                        <a href="#"><span>Xin chào, <span class="font-weight-bold">{{ Session::get('fullname') }}</span>
+                                <i class="fas fa-angle-down"></i></a>
                         <ul class="sub-menu">
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">Order History</a></li>
-                            <li><a href="#">Transactions</a></li>
-                            <li><a href="#">Downloads</a></li>
+                            <li><a href="{{ route('orders.index') }}">Danh sách đơn mượn</a></li>
+                            <li><a href="{{ route('user.logout') }}">Đăng xuất</a></li>
                         </ul>
                     </li>
+                    @endif
                 </ul>
             </nav>
             <div class="off-canvas-bottom">

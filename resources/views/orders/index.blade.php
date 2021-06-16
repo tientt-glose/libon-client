@@ -52,7 +52,6 @@
             </div>
             <div class="row">
                 <div class="col-12">
-
                     <div class="cart-table table-responsive mb--40">
                         <table class="table">
                             <!-- Head Row -->

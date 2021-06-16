@@ -17,3 +17,7 @@
     color: #ffffff;
     background-color: orange;
 }
+
+a:hover {
+    color: #d53d26;
+}

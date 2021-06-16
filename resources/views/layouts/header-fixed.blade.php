@@ -13,7 +13,7 @@
                             <a href="{{ route('home.index') }}">Trang chủ</a>
                         </li>
                         <li class="menu-item">
-                            <a href="#">Sách mượn</a>
+                            <a href="{{ route('home.index') }}">Sách mượn</a>
                         </li>
                         <li class="menu-item">
                             <a href="#">Về chúng tôi</a>
@@ -79,7 +79,7 @@
                                     <div class="btn-block">
                                         {{-- <a href="cart.html" class="btn">View Cart <i
                                                 class="fas fa-chevron-right"></i></a> --}}
-                                        <a href="{{ route('cart.show') }}" class="btn btn--primary">Mượn sách</a>
+                                        <a href="{{ route('cart.show') }}" class="btn btn--primary">Xem giỏ</a>
                                     </div>
                                 </div>
                             </div>

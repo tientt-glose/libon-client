@@ -42,6 +42,26 @@ class CartController extends Controller
                 return redirect()->back()->withInput()->withErrors($validator->errors());
             }
 
+            // dd($params['books']);
+
+            $errors = '';
+            foreach ($params['books'] as $key => $book) {
+                $result = $this->libonApi->checkPending(['book_id' => $key]);
+                if ($result->success && $result->isPending) {
+                    $errors .= $book . ' đang trong hàng đợi; ';
+                }
+
+                $result = $this->libonApi->checkBorrowable(['book_id' => $key]);
+                if ($result->success && !$result->isBorrowable) {
+                    $errors .= $book . ' đang không thể mượn; ';
+                }
+            }
+
+            // dd($errors);
+            if ($errors) {
+                return redirect()->back()->withInput()->withErrors($errors);
+            }
+
             $sendData = [
                 'user_id' => $params['user_id'],
                 'books' => $params['books'],

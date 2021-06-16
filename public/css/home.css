@@ -22,14 +22,14 @@
     font-size: 13px;
 }
 
-.product-card .card-image {
+#myTabContent .product-card .card-image {
     height: 310px;
 }
 
-.product-card .product-header {
+#myTabContent .product-card .product-header {
     height: 80px;
 }
 
-.product-card h3 a {
+#myTabContent .product-card h3 a {
     height: 45px;
 }

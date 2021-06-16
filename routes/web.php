@@ -15,13 +15,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'HomeController@index')->name('home.index');
 
-Route::get('book/{id}', 'BookController@detail')->name('book.detail');
+Route::prefix('book')->group(function () {
+    Route::get('/{id}', 'BookController@detail')->name('book.detail');
+});
 
-Route::post('/add-cart', 'CartController@addBookToCart')->name('cart.add_to_cart');
-Route::post('/delete-cart', 'CartController@deleteBookInCart')->name('cart.delete_to_cart');
-Route::middleware(['custom_auth'])->prefix('cart')->group(function () {
+Route::prefix('cart')->group(function () {
     Route::get('/', 'CartController@show')->name('cart.show');
-    Route::post('/borrow_book', 'CartController@borrowBook')->name('cart.borrow_book');
+    Route::post('/add-cart', 'CartController@addBookToCart')->name('cart.add_to_cart');
+    Route::post('/delete-cart', 'CartController@deleteBookInCart')->name('cart.delete_to_cart');
+
+    Route::middleware(['custom_auth'])->group(function () {
+        Route::post('/borrow_book', 'CartController@borrowBook')->name('cart.borrow_book');
+    });
 });
 
 Route::middleware(['custom_auth'])->prefix('orders')->group(function () {

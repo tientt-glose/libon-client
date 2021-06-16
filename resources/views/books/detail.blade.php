@@ -210,7 +210,9 @@
             </div> -->
                 <div class="add-cart-btn">
                     <button type="button" class="btn btn-outlined--primary btn-dis" id="add-cart-button"
-                        aria-disabled="true" {{$book->can_borrow == 0 ? 'disabled' : '' }}>Thêm sách vào giỏ</button>
+                        aria-disabled="true"
+                        {{$book->can_borrow == 0 || $book->can_borrow == 2 ? 'disabled' : '' }}>Thêm sách vào
+                        giỏ</button>
                     {{-- <a href="#" class="btn btn-outlined--primary btn-dis" id="add-cart-button" aria-disabled="true">Thêm sách vào giỏ</a> --}}
                 </div>
             </div>
@@ -218,6 +220,12 @@
             <div class="compare-wishlist-row">
                 <span class="add-link" style="color: red"><i class="fas fa-info-circle"></i>Sách đang hết, không thể
                     mượn</span>
+            </div>
+            @endif
+            @if ($book->can_borrow == 2)
+            <div class="compare-wishlist-row">
+                <span class="add-link" style="color: red"><i class="fas fa-info-circle"></i>Sách đang trong hàng đợi
+                    mượn của các đơn phía trước, vui lòng quay lại sau</span>
             </div>
             @endif
         </div>
