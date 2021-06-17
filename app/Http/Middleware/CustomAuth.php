@@ -19,6 +19,6 @@ class CustomAuth
             return $next($request);
         }
 
-        return redirect()->route('home.index')->withErrors('Hãy đăng nhập để sử dụng chức năng');
+        return redirect()->route('user.login.show')->withErrors('Hãy đăng nhập để sử dụng chức năng');
     }
 }

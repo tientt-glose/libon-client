@@ -189,7 +189,7 @@
                     <a href="#" class="single-icon"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" class="single-icon"><i class="fab fa-twitter"></i></a>
                     <a href="#" class="single-icon"><i class="fas fa-rss"></i></a>
-                    <a href="#" class="single-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="https://youtu.be/Hsd6gWkLZdw" target="_blank" class="single-icon"><i class="fab fa-youtube"></i></a>
                     <a href="#" class="single-icon"><i class="fab fa-google-plus-g"></i></a>
                     <a href="#" class="single-icon"><i class="fab fa-instagram"></i></a>
                 </div>

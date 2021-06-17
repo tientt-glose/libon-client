@@ -21,7 +21,8 @@
     @yield('before-styles-end')
 
     <!-- favicons -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/logo--mini.png') }}"/>
+    {{-- <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"> --}}
 </head>
 
 <body>
